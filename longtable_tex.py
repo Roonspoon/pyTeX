@@ -1,8 +1,3 @@
-"""
-Adapted from https://gist.github.com/astrolitterbox/8e92f27651608162bc06
-It's now basically completely
-"""
-
 from __future__ import division
 import numpy as np
 
@@ -14,8 +9,9 @@ def isfloat(value):
     return False
 
 
-def longtable_out(file_name,data,column_names,caption,label='tab1',center=True,sigfigs=3,alignment=None,boldface=False):
-'''
+def longtable_out(file_name,data,column_names,caption,label='tab1',center=True,
+                                      sigfigs=3,alignment=None,boldface=False):
+    '''
 @file_name:         The name of the text file to write a LaTeX longtable to.
                     Fairly sure this file must already exist, should probably
                     check this and give it the ability to make file if needed
@@ -43,7 +39,40 @@ def longtable_out(file_name,data,column_names,caption,label='tab1',center=True,s
 @boldface:          Do you want the column headers to be bold? This takes True/
                     False, and defaults to False arbitrarily.
 
-longtable_out (hopefully) makes nice longtables, hope it comes in handy!                   
+longtable_out (hopefully) makes nice longtables, hope it comes in handy!     
+Example:
+
+>>> longtable_out('testfile.txt',np.zeros((3,5)),np.array(['col1','col2','col3']),'caption')
+
+prints to file:
+
+            \begin{center} 
+            \begin{longtable}{|c|c|c|}
+            \caption{caption} \label{tab1} \\ 
+            
+            \hline \multicolumn{1}{|c|}{col1}& \multicolumn{1}{|c|}{col2}& \multicolumn{1}{|c|}{test3}\\ \hline
+            \endfirsthead 
+             
+            \multicolumn{3}{c}%
+            {{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\ 
+            \hline \multicolumn{1}{|c|}{col1}& \multicolumn{1}{|c|}{col2}& \multicolumn{1}{|c|}{test3}\\ \hline
+            \endhead 
+             
+            \hline \multicolumn{3}{|r|}{{Continued on next page}} \\ \hline 
+            \endfoot 
+            
+            \hline \hline 
+            \endlastfoot 
+            
+            0.0	 & 	0.0	 & 	0.0	\\
+            0.0	 & 	0.0	 & 	0.0	\\
+            0.0	 & 	0.0	 & 	0.0	\\
+            0.0	 & 	0.0	 & 	0.0	\\
+            0.0	 & 	0.0	 & 	0.0	\\
+            \end{longtable}
+            \end{center}
+
+
 '''
     
     ofile = open(file_name, 'w')
@@ -96,11 +125,10 @@ longtable_out (hopefully) makes nice longtables, hope it comes in handy!
                     sigfig_curr = sigfigs[j]
                 elif len(sigfigs1)==1:
                     sigfig_curr = sigfigs
-                print float(itm),sigfig_curr
                 if j!=len(column_names)-1:
-                    curr_obj += str(round(float(itm),sigfig_curr))+'&'
+                    curr_obj += str(round(float(itm),sigfig_curr))+'\t & \t'
                 elif j==len(column_names)-1:
-                    curr_obj += str(round(float(itm),sigfig_curr))
+                    curr_obj += str(round(float(itm),sigfig_curr))+'\t'
         ofile.write(curr_obj+'\\\\'+'\n')
     
     ofile.write('\\end{longtable}\n')
@@ -109,22 +137,3 @@ longtable_out (hopefully) makes nice longtables, hope it comes in handy!
     
     ofile.close()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
