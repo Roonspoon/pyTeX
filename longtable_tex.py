@@ -1,3 +1,8 @@
+"""
+Adapted from https://gist.github.com/astrolitterbox/8e92f27651608162bc06
+It's now basically completely different though....
+"""
+
 from __future__ import division
 import numpy as np
 
@@ -129,6 +134,11 @@ prints to file:
                     curr_obj += str(round(float(itm),sigfig_curr))+'\t & \t'
                 elif j==len(column_names)-1:
                     curr_obj += str(round(float(itm),sigfig_curr))+'\t'
+            else:
+                if j!=len(column_names)-1:
+                    curr_obj += itm + '\t & \t'
+                elif j==len(column_names)-1:
+                    curr_obj += itm + '\t'
         ofile.write(curr_obj+'\\\\'+'\n')
     
     ofile.write('\\end{longtable}\n')
@@ -137,3 +147,6 @@ prints to file:
     
     ofile.close()
 
+
+
+longtable_out('testfile.txt',np.zeros((5,3)),np.array(['col1','col2','test3']),'caption')
